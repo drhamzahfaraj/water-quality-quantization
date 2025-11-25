@@ -1,1 +1,33 @@
-
+config_path: experiments/configs/hybrid_edge_global.yaml
+experiment_name: hybrid_edge_global
+model:
+  type: student_lstm
+  input_dim: 8
+  hidden_size: 96
+  num_layers: 2
+  dropout: 0.2
+  output_dim: 3
+  quantization:
+    scheme: dynamic_mixed_precision
+    bitwidth_range: [4, 8]
+  knowledge_distillation:
+    enabled: true
+    teacher_checkpoint: models/teacher_fullprecision/checkpoint_best.pt
+training:
+  optimizer: adam
+  learning_rate: 1.0e-3
+  batch_size: 256
+  epochs: 100
+data:
+  dataset_name: unep_gems_water
+  dataset_root: data/unep_gems_water
+  split: global
+  features: [DO, BOD, COD, NO3, PO4, EC, TEMP, PH]
+  targets: [DO, BOD, NO3]
+hardware:
+  device: cpu
+  edge_eval: true
+  edge_platform: raspberry_pi_4b
+scheduler:
+  type: energy_aware_rl
+seed: 0
