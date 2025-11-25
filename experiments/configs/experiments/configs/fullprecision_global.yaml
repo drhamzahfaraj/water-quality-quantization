@@ -1,1 +1,25 @@
-
+config_path: experiments/configs/fullprecision_global.yaml
+experiment_name: fullprecision_global
+model:
+  type: teacher_lstm
+  input_dim: 8
+  hidden_size: 256
+  num_layers: 3
+  dropout: 0.2
+  output_dim: 3
+training:
+  optimizer: adam
+  learning_rate: 1.0e-3
+  batch_size: 256
+  epochs: 100
+  early_stopping_patience: 10
+data:
+  dataset_name: unep_gems_water
+  dataset_root: data/unep_gems_water
+  split: global
+  features: [DO, BOD, COD, NO3, PO4, EC, TEMP, PH]
+  targets: [DO, BOD, NO3]
+hardware:
+  device: cuda
+  edge_eval: false
+seed: 0
